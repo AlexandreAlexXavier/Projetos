@@ -1,0 +1,93 @@
+﻿CREATE TABLE [Planetas] (
+        IdPlaneta integer NOT NULL DEFAULT 'not null',
+        Nome varchar(50) NOT NULL DEFAULT 'not null',
+        Diametro float NOT NULL DEFAULT 'not null',
+        Populacao integer NOT NULL DEFAULT 'not null',
+  CONSTRAINT [PK_PLANETAS] PRIMARY KEY CLUSTERED
+  (
+  [IdPlaneta] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+
+)
+GO
+CREATE TABLE [Naves] (
+        IdNave integer NOT NULL DEFAULT 'not null',
+        Nome varchar(100) NOT NULL DEFAULT 'not null',
+        Modelo varchar(100) NOT NULL DEFAULT 'not null',
+        Carga float NOT NULL DEFAULT 'not null',
+        Classe varchar(100) NOT NULL DEFAULT 'not null',
+  CONSTRAINT [PK_NAVES] PRIMARY KEY CLUSTERED
+  (
+  [IdNave] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+
+)
+GO
+CREATE TABLE [Pilotos] (
+        IdPiloto integer NOT NULL DEFAULT 'not null',
+        Nome varchar(200) NOT NULL DEFAULT 'not null',
+        AnoNascimento varchar(10) NOT NULL DEFAULT 'not null',
+        IdPlaneta integer NOT NULL DEFAULT 'not null',
+  CONSTRAINT [PK_PILOTOS] PRIMARY KEY CLUSTERED
+  (
+  [IdPiloto] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+
+)
+GO
+CREATE TABLE [PilotoNaves] (
+        IdPiloto integer NOT NULL DEFAULT 'not full',
+        IdNave integer NOT NULL DEFAULT 'not full',
+        FlagAutorizado binary NOT NULL DEFAULT '1',
+  CONSTRAINT [PK_PILOTONAVES] PRIMARY KEY CLUSTERED
+  (
+  [IdPiloto] ASC
+  ) WITH (IGNORE_DUP_KEY = OFF)
+
+
+)
+GO
+CREATE TABLE [HistoricoViagens] (
+        IdPiloto integer NOT NULL DEFAULT 'not full',
+        IdNave integer NOT NULL DEFAULT 'not full',
+        DtSaida datetime NOT NULL DEFAULT 'not full',
+        DtChegada datetime,
+        DtChegada datetime NOT NULL DEFAULT 'not full'
+)
+GO
+
+
+
+
+ALTER TABLE [Pilotos] WITH CHECK ADD CONSTRAINT [Pilotos_fk0] FOREIGN KEY ([IdPlaneta]) REFERENCES [Planetas]([IdPlaneta])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [Pilotos] CHECK CONSTRAINT [Pilotos_fk0]
+GO
+
+
+ALTER TABLE [PilotoNaves] WITH CHECK ADD CONSTRAINT [PilotoNaves_fk0] FOREIGN KEY ([IdPiloto]) REFERENCES [Pilotos]([IdPiloto])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [PilotoNaves] CHECK CONSTRAINT [PilotoNaves_fk0]
+GO
+ALTER TABLE [PilotoNaves] WITH CHECK ADD CONSTRAINT [PilotoNaves_fk1] FOREIGN KEY ([IdNave]) REFERENCES [Naves]([IdNave])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [PilotoNaves] CHECK CONSTRAINT [PilotoNaves_fk1]
+GO
+
+
+ALTER TABLE [HistoricoViagens] WITH CHECK ADD CONSTRAINT [HistoricoViagens_fk0] FOREIGN KEY ([IdPiloto]) REFERENCES [PilotoNaves]([IdPiloto])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [HistoricoViagens] CHECK CONSTRAINT [HistoricoViagens_fk0]
+GO
+ALTER TABLE [HistoricoViagens] WITH CHECK ADD CONSTRAINT [HistoricoViagens_fk1] FOREIGN KEY ([IdNave]) REFERENCES [PilotoNaves]([IdNave])
+ON UPDATE CASCADE
+GO
+ALTER TABLE [HistoricoViagens] CHECK CONSTRAINT [HistoricoViagens_fk1]
+GO
